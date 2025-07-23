@@ -93,39 +93,41 @@ internal static class BuildServerUtility
 
     #region Client side
 
-    public static async Task ShutdownServersAsync(Action<string> onError)
+    public static Task ShutdownServersAsync(Action<Process> onProcessShutdownBegin, Action<string> onError, string hostServerPath)
     {
-        var folder = Environment.GetEnvironmentVariable(DotNetHostServerPath);
-
-        if (string.IsNullOrEmpty(folder))
-        {
-            throw new InvalidOperationException($"Environment variable '{DotNetHostServerPath}' is not set.");
-        }
-
         // Enumerate pipes.
-        await Task.WhenAll(Directory.EnumerateFiles(folder).Select(async file =>
+        return Task.WhenAll(Directory.EnumerateFiles(hostServerPath).Select(async file =>
         {
-            // Connect to each pipe.
-            var client = new NamedPipeClientStream(file);
-            await client.ConnectAsync().ConfigureAwait(false);
-
-            // Send data to request shutdown.
-            byte[] data = [1];
-            await client.WriteAsync(data).ConfigureAwait(false);
-
-            // Try to parse PID from the file name.
-            var pid = Path.GetFileNameWithoutExtension(file);
-            if (!int.TryParse(pid, out var processId))
+            try
             {
-                onError($"Cannot parse pipe file name: {file}");
-                return;
-            }
+                // Try to parse PID from the file name.
+                var pid = Path.GetFileNameWithoutExtension(file);
+                if (!int.TryParse(pid, out var processId))
+                {
+                    onError($"Cannot parse pipe file name: {file}");
+                    return;
+                }
 
-            // Wait for the process to exit.
-            using var process = Process.GetProcessById(processId);
-            await process.WaitForExitAsync().ConfigureAwait(false);
-        }))
-        .ConfigureAwait(false);
+                // Find the process.
+                using var process = Process.GetProcessById(processId);
+                onProcessShutdownBegin(process);
+
+                // Connect to each pipe.
+                var client = new NamedPipeClientStream(file);
+                await client.ConnectAsync().ConfigureAwait(false);
+
+                // Send data to request shutdown.
+                byte[] data = [1];
+                await client.WriteAsync(data).ConfigureAwait(false);
+
+                // Wait for the process to exit.
+                await process.WaitForExitAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                onError($"Error while shutting down server for pipe '{file}': {ex.Message}");
+            }
+        }));
     }
 
     #endregion
