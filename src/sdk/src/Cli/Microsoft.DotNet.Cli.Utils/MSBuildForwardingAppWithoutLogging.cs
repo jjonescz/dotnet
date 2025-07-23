@@ -4,6 +4,7 @@
 #if NET
 
 using System.Diagnostics;
+using Microsoft.Net.BuildServerUtils;
 using Microsoft.DotNet.Cli.Utils.Extensions;
 using Microsoft.DotNet.Cli;
 
@@ -70,6 +71,8 @@ internal class MSBuildForwardingAppWithoutLogging
 
         EnvironmentVariable("MSBUILDUSESERVER", UseMSBuildServer ? "1" : "0");
 
+        SetHostServerPath();
+
         // If DOTNET_CLI_RUN_MSBUILD_OUTOFPROC is set or we're asked to execute a non-default binary, call MSBuild out-of-proc.
         if (AlwaysExecuteMSBuildOutOfProc || !string.Equals(MSBuildPath, defaultMSBuildPath, StringComparison.OrdinalIgnoreCase))
         {
@@ -132,6 +135,24 @@ internal class MSBuildForwardingAppWithoutLogging
             // Disable MSBUILDUSESERVER if any env vars are null as those are not properly transferred to build nodes
             _msbuildRequiredEnvironmentVariables["MSBUILDUSESERVER"] = "0";
         }
+    }
+
+    private void SetHostServerPath()
+    {
+        // If the path is set from outside, reuse it.
+        var hostServerPath = Env.GetEnvironmentVariable(BuildServerUtility.DotNetHostServerPath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            // Otherwise, construct a directory path under temp.
+            string baseDirectory = PathUtility.GetUserRestrictedTempDirectory();
+            hostServerPath = Path.Join(baseDirectory, "dotnet", "server", Product.TargetFrameworkVersion);
+        }
+
+        // Create the directory.
+        PathUtility.CreateUserRestrictedDirectory(hostServerPath);
+
+        // Pass as environment variable.
+        EnvironmentVariable(BuildServerUtility.DotNetHostServerPath, hostServerPath);
     }
 
     public int Execute()

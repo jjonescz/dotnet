@@ -17,7 +17,7 @@ namespace Microsoft.Net.BuildServerUtils;
 
 internal static class BuildServerUtility
 {
-    private const string DotNetHostServerPath = "DOTNET_HOST_SERVER_PATH";
+    public const string DotNetHostServerPath = "DOTNET_HOST_SERVER_PATH";
 
     #region Server side
 
