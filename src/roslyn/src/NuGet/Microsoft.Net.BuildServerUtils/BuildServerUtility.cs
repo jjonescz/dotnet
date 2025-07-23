@@ -50,13 +50,12 @@ internal static class BuildServerUtility
         File.Delete(pipePath);
 
         // Wait for any input which means shutdown is requested.
-        var server = new NamedPipeServerStream(pipePath);
-        await using var _ = server.ConfigureAwait(false);
+        using var server = new NamedPipeServerStream(pipePath);
         await server.WaitForConnectionAsync(cancellationToken).ConfigureAwait(false);
-        await server.ReadExactlyAsync(new byte[1], cancellationToken).ConfigureAwait(false);
+        await server.ReadAsync(new byte[1], 0, 1, cancellationToken).ConfigureAwait(false);
 
         // Close and delete the pipe.
-        await server.DisposeAsync().ConfigureAwait(false);
+        server.Dispose();
         File.Delete(pipePath);
     }
 
@@ -93,6 +92,8 @@ internal static class BuildServerUtility
 
     #region Client side
 
+#if NET
+
     public static Task ShutdownServersAsync(Action<Process> onProcessShutdownBegin, Action<string> onError, string hostServerPath)
     {
         // Enumerate pipes.
@@ -114,6 +115,7 @@ internal static class BuildServerUtility
 
                 // Connect to each pipe.
                 var client = new NamedPipeClientStream(file);
+                await using var _ = client.ConfigureAwait(false);
                 await client.ConnectAsync().ConfigureAwait(false);
 
                 // Send data to request shutdown.
@@ -129,6 +131,8 @@ internal static class BuildServerUtility
             }
         }));
     }
+
+#endif
 
     #endregion
 }
