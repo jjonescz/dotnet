@@ -62,6 +62,8 @@
       <ManifestFiles Include="$(RedistInstallerLayoutPath)sdk-manifests/**/*" />
     </ItemGroup>
 
+    <Exec Command="ls -al $(InstallerOutputDirectory)Roslyn/bincore/%(_RoslynAppHost.Filename)" />
+
     <!-- Create layout: Binaries -->
     <Error Condition="'@(CLISdkFiles)' == ''" Text="The 'CLISdkFiles' items are empty. This shouldn't happen!" />
     <Copy
@@ -88,6 +90,10 @@
       OverwriteReadOnlyFiles="True"
       SkipUnchangedFiles="False"
       UseHardlinksIfPossible="False" />
+
+    <Exec Command="ls -al $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
+    <Exec Command="chmod 755 $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
+    <Exec Command="ls -al $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
   </Target>
 
   <Target Name="SetCustomPackagingProperties" AfterTargets="_GetInstallerProperties">
