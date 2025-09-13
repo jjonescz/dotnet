@@ -636,7 +636,7 @@ namespace Microsoft.DotNet.SignTool
             {
                 string relativePath = entry.Name; // lgtm [cs/zipslip] Archive from trusted source
 
-                // The relative path ocassionally ends with a '/', which is not a valid path given that the path is a file.
+                // The relative path occasionally ends with a '/', which is not a valid path given that the path is a file.
                 // Remove the following workaround once https://github.com/dotnet/arcade/issues/15384 is resolved.
                 if (relativePath.EndsWith("/"))
                 {
@@ -658,7 +658,10 @@ namespace Microsoft.DotNet.SignTool
 
             while (archive.GetNextEntry() is CpioEntry entry)
             {
-                yield return new ZipDataEntry(entry.Name, entry.DataStream);
+                yield return new ZipDataEntry(entry.Name, entry.DataStream)
+                {
+                    UnixFileMode = entry.Mode,
+                };
             }
         }
 
@@ -754,6 +757,12 @@ namespace Microsoft.DotNet.SignTool
                 if (entry != null)
                 {
                     entry.WriteToFile(outputPath);
+
+                    // Set file mode if not the default.
+                    if (entry.UnixFileMode is { } mode and not /* 0644 */ 420)
+                    {
+                        RunExternalProcess("chmod", $"{Convert.ToString(mode, 8)} '{outputPath}'", out string _);
+                    }
                 }
             }
         }
