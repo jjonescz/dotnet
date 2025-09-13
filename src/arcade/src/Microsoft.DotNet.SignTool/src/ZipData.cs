@@ -672,7 +672,7 @@ namespace Microsoft.DotNet.SignTool
             Directory.CreateDirectory(workingDir);
             string layout = Path.Combine(workingDir, "layout");
             Directory.CreateDirectory(layout);
-            ExtractRpmPayloadContents(FileSignInfo.FullPath, layout);
+            ExtractRpmPayloadContents(log, FileSignInfo.FullPath, layout);
 
             // Update signed files in layout
             foreach (var signedPart in NestedParts.Values)
@@ -683,10 +683,10 @@ namespace Microsoft.DotNet.SignTool
             // Create payload.cpio
             string payload = Path.Combine(workingDir, "payload.cpio");
 
-            RunExternalProcess("bash", $"-c \"find . -depth ! -wholename '.' -print  | cpio -H newc -o --quiet > '{payload}'\"", out string _, layout);
+            RunExternalProcess(log, "bash", $"-c \"find . -depth ! -wholename '.' -print  | cpio -H newc -o --quiet > '{payload}'\"", out string _, layout);
 
             // Collect file types for all files in layout
-            RunExternalProcess("bash", $"-c \"find . -depth ! -wholename '.'  -exec file {{}} \\;\"", out string output, layout);
+            RunExternalProcess(log, "bash", $"-c \"find . -depth ! -wholename '.'  -exec file {{}} \\;\"", out string output, layout);
             ITaskItem[] rawPayloadFileKinds =
                 output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
                       .Select(t => new TaskItem(t))
@@ -747,7 +747,7 @@ namespace Microsoft.DotNet.SignTool
             return RpmPackage.Read(stream).Header.Entries;
         }
 
-        internal static void ExtractRpmPayloadContents(string rpmPackage, string layout)
+        internal static void ExtractRpmPayloadContents(TaskLoggingHelper log, string rpmPackage, string layout)
         {
             foreach (var entry in ReadRpmContainerEntries(rpmPackage))
             {
@@ -761,14 +761,16 @@ namespace Microsoft.DotNet.SignTool
                     // Set file mode if not the default.
                     if (entry.UnixFileMode is { } mode and not /* 0644 */ 420)
                     {
-                        RunExternalProcess("chmod", $"{Convert.ToString(mode, 8)} '{outputPath}'", out string _);
+                        RunExternalProcess(log, "chmod", $"{Convert.ToString(mode, 8)} '{outputPath}'", out string _);
                     }
                 }
             }
         }
 
-        private static bool RunExternalProcess(string cmd, string args, out string output, string workingDir = null)
+        private static bool RunExternalProcess(TaskLoggingHelper log, string cmd, string args, out string output, string workingDir = null)
         {
+            log?.LogMessage(MessageImportance.Low, $"Running command: '{cmd}' {args}");
+
             ProcessStartInfo psi = new()
             {
                 FileName = cmd,
