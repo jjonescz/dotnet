@@ -96,6 +96,15 @@
     <Exec Command="ls -al $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
   </Target>
 
+  <Target Name="CheckBeforeRpm" BeforeTargets="CreateRpm">
+    <Exec Command="ls -al $(_LayoutDataRoot)usr/share/dotnet/sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
+  </Target>
+
+  <Target Name="CheckRpm" AfterTargets="CreateRpm">
+    <Exec Command="cpio -tv -I $(_LayoutDirectory)/payload.cpio | grep '/Roslyn/bincore/'" ContinueOnError="true" />
+    <Exec Command="rpm -qlpv $(_InstallerFile) | grep '/Roslyn/bincore/'" ContinueOnError="true" />
+  </Target>
+
   <Target Name="SetCustomPackagingProperties" AfterTargets="_GetInstallerProperties">
     <PropertyGroup>
       <PackageSummary>Microsoft .NET SDK $(PackageVersion)</PackageSummary>
