@@ -660,7 +660,7 @@ namespace Microsoft.DotNet.SignTool
             {
                 yield return new ZipDataEntry(entry.Name, entry.DataStream)
                 {
-                    UnixFileMode = entry.Mode,
+                    UnixFileMode = entry.Mode & CpioEntry.FilePermissionMask,
                 };
             }
         }
