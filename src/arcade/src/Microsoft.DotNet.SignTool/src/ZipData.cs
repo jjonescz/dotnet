@@ -761,7 +761,9 @@ namespace Microsoft.DotNet.SignTool
                     // Set file mode if not the default.
                     if (entry.UnixFileMode is { } mode and not /* 0644 */ 420)
                     {
-                        RunExternalProcess(log, "chmod", $"{Convert.ToString(mode, 8)} '{outputPath}'", out string _);
+                        RunExternalProcess(log, "bash", $"""
+                            -c "chmod {Convert.ToString(mode, 8)} '{outputPath}'"
+                            """, out string _, layout);
                     }
                 }
             }
