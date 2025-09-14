@@ -62,8 +62,6 @@
       <ManifestFiles Include="$(RedistInstallerLayoutPath)sdk-manifests/**/*" />
     </ItemGroup>
 
-    <Exec Command="ls -al $(InstallerOutputDirectory)Roslyn/bincore/%(_RoslynAppHost.Filename)" />
-
     <!-- Create layout: Binaries -->
     <Error Condition="'@(CLISdkFiles)' == ''" Text="The 'CLISdkFiles' items are empty. This shouldn't happen!" />
     <Copy
@@ -90,19 +88,6 @@
       OverwriteReadOnlyFiles="True"
       SkipUnchangedFiles="False"
       UseHardlinksIfPossible="False" />
-
-    <Exec Command="ls -al $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
-    <Exec Command="chmod 755 $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
-    <Exec Command="ls -al $(OutputPath)sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
-  </Target>
-
-  <Target Name="CheckBeforeRpm" BeforeTargets="CreateRpm">
-    <Exec Command="ls -al $(_LayoutDataRoot)usr/share/dotnet/sdk/$(Version)/Roslyn/bincore/%(_RoslynAppHost.Filename)" />
-  </Target>
-
-  <Target Name="CheckRpm" AfterTargets="CreateRpm">
-    <Exec Command="cpio -tv -I $(_LayoutDirectory)/payload.cpio | grep '/Roslyn/bincore/'" ContinueOnError="true" />
-    <Exec Command="rpm -qlpv $(_InstallerFile) | grep '/Roslyn/bincore/'" ContinueOnError="true" />
   </Target>
 
   <Target Name="SetCustomPackagingProperties" AfterTargets="_GetInstallerProperties">
