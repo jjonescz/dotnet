@@ -776,7 +776,7 @@ namespace Microsoft.DotNet.SignTool
                 FileName = cmd,
                 Arguments = args,
                 RedirectStandardOutput = true,
-                RedirectStandardError = false,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WorkingDirectory = workingDir
@@ -785,6 +785,17 @@ namespace Microsoft.DotNet.SignTool
             using Process process = Process.Start(psi);
             output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
+
+            string stderr = process.StandardError.ReadToEnd();
+            if (!string.IsNullOrWhiteSpace(stderr))
+            {
+                log?.LogMessage(MessageImportance.Low, $"  Stderr: {stderr}");
+            }
+
+            if (process.ExitCode != 0)
+            {
+                log?.LogMessage(MessageImportance.Low, $"  Exit code: {process.ExitCode}");
+            }
 
             return process.ExitCode == 0;
         }
