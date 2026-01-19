@@ -1,5 +1,4 @@
 
-//  Microsoft (R) .NET IL Disassembler.  Version 5.0.0
 
 
 // ----- DOS Header:
@@ -1071,9 +1070,9 @@
 .assembly /*20000001*/ noplatform System.Runtime
 {
   .custom instance void System.Reflection.AssemblyMetadataAttribute::.ctor(string,
-                                                                                        string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
-                                                                                                    2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
-                                                                                                    2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
+                                                                           string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
+                                                                                       2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
+                                                                                       2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
   .custom /*0C000005:060014A3*/ instance void System.Runtime.CompilerServices.ExtensionAttribute/*020001C7*/::.ctor() /* 060014A3 */ = ( 01 00 00 00 ) 
   .custom /*0C000006:0600147D*/ instance void System.Runtime.CompilerServices.CompilationRelaxationsAttribute/*020001B5*/::.ctor(int32) /* 0600147D */ = ( 01 00 08 00 00 00 00 00 ) 
   .custom /*0C000007:060014E5*/ instance void System.Runtime.CompilerServices.RuntimeCompatibilityAttribute/*020001E4*/::.ctor() /* 060014E5 */ = ( 01 00 01 00 54 02 16 57 72 61 70 4E 6F 6E 45 78   // ....T..WrapNonEx
@@ -1149,7 +1148,6 @@
 .stackreserve 0x00100000
 .subsystem 0x0003       // WINDOWS_CUI
 .corflags 0x00000009    //  ILONLY
-// Image base: 0x00007F6F0F1BE000
 
 
 // =============== CLASS MEMBERS DECLARATION ===================

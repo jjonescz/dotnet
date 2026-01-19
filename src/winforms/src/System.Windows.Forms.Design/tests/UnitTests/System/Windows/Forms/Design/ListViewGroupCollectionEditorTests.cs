@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
-using System.Reflection;
 using Moq;
 
 namespace System.Windows.Forms.Design.Tests;
@@ -21,7 +20,7 @@ public class ListViewGroupCollectionEditorTests
 
         ListViewGroupCollectionEditor editor = new(expectedType);
 
-        Type actualType = editor.TestAccessor().Dynamic.CollectionType;
+        Type actualType = editor.TestAccessor.Dynamic.CollectionType;
 
         actualType.Should().Be(expectedType);
     }
@@ -47,23 +46,13 @@ public class ListViewGroupCollectionEditorTests
     public void CreateInstance_CreatesListViewGroupWithUniqueName()
     {
         Mock<ListViewGroupCollection> mockCollection = new(new ListView());
-        _mockEditor.Object.TestAccessor().Dynamic._editValue = mockCollection.Object;
+        _mockEditor.Object.TestAccessor.Dynamic._editValue = mockCollection.Object;
 
-        ListViewGroup? result = _mockEditor.Object.TestAccessor().Dynamic.CreateInstance(typeof(ListViewGroup)) as ListViewGroup;
+        ListViewGroup? result = _mockEditor.Object.TestAccessor.Dynamic.CreateInstance(typeof(ListViewGroup)) as ListViewGroup;
 
         result.Should().NotBeNull();
         result?.Name.Should().BeOfType<string>();
         result?.Name.Should().StartWith("ListViewGroup");
         result?.GetType().Should().Be(typeof(ListViewGroup));
-    }
-
-    [Fact]
-    public void CreateInstance_ThrowsException_WhenEditValueIsNull()
-    {
-        _mockEditor.Object.TestAccessor().Dynamic._editValue = null;
-
-        Action action = () => _mockEditor.Object.TestAccessor().Dynamic.CreateInstance(typeof(ListViewGroup));
-
-        action.Should().Throw<TargetInvocationException>();
     }
 }

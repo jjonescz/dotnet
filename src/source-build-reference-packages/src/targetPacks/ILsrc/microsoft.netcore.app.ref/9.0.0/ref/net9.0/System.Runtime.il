@@ -1,5 +1,4 @@
 
-//  Microsoft (R) .NET IL Disassembler.  Version 5.0.0
 
 
 // ----- DOS Header:
@@ -1181,9 +1180,9 @@
 .assembly /*20000001*/ noplatform System.Runtime
 {
   .custom instance void System.Reflection.AssemblyMetadataAttribute::.ctor(string,
-                                                                                        string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
-                                                                                                    2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
-                                                                                                    2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
+                                                                           string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
+                                                                                       2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
+                                                                                       2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
   .custom /*0C000006:06001DC1*/ instance void System.Runtime.CompilerServices.ExtensionAttribute/*020001E6*/::.ctor() /* 06001DC1 */ = ( 01 00 00 00 ) 
   .custom /*0C000007:06001D86*/ instance void System.Runtime.CompilerServices.CompilationRelaxationsAttribute/*020001D1*/::.ctor(int32) /* 06001D86 */ = ( 01 00 08 00 00 00 00 00 ) 
   .custom /*0C000008:06001E02*/ instance void System.Runtime.CompilerServices.RuntimeCompatibilityAttribute/*0200020C*/::.ctor() /* 06001E02 */ = ( 01 00 01 00 54 02 16 57 72 61 70 4E 6F 6E 45 78   // ....T..WrapNonEx
@@ -1254,7 +1253,6 @@
 .stackreserve 0x00100000
 .subsystem 0x0003       // WINDOWS_CUI
 .corflags 0x00000009    //  ILONLY
-// Image base: 0x00007FA833B72000
 
 
 // =============== CLASS MEMBERS DECLARATION ===================
@@ -1362,7 +1360,7 @@
 
 } // end of class System.Action
 
-.class /*02000004*/ public auto ansi sealed System.Action`1<- T>
+.class /*02000004*/ public auto ansi sealed System.Action`1<- byreflike T>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A000001*/ 
@@ -1400,7 +1398,7 @@
 
 } // end of class System.Action`1
 
-.class /*02000005*/ public auto ansi sealed System.Action`2<- T1,- T2>
+.class /*02000005*/ public auto ansi sealed System.Action`2<- byreflike T1,- byreflike T2>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T1 /*2A000002*/ 
@@ -1444,7 +1442,7 @@
 
 } // end of class System.Action`2
 
-.class /*02000006*/ public auto ansi sealed System.Action`3<- T1,- T2,- T3>
+.class /*02000006*/ public auto ansi sealed System.Action`3<- byreflike T1,- byreflike T2,- byreflike T3>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T1 /*2A000004*/ 
@@ -1494,7 +1492,7 @@
 
 } // end of class System.Action`3
 
-.class /*02000007*/ public auto ansi sealed System.Action`4<- T1,- T2,- T3,- T4>
+.class /*02000007*/ public auto ansi sealed System.Action`4<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000032:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1545,8 +1543,8 @@
 
 } // end of class System.Action`4
 
-.class /*02000008*/ public auto ansi sealed System.Action`5<- T1,- T2,- T3,- T4,
-                                                            - T5>
+.class /*02000008*/ public auto ansi sealed System.Action`5<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                            - byreflike T5>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000037:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1599,8 +1597,8 @@
 
 } // end of class System.Action`5
 
-.class /*02000009*/ public auto ansi sealed System.Action`6<- T1,- T2,- T3,- T4,
-                                                            - T5,- T6>
+.class /*02000009*/ public auto ansi sealed System.Action`6<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                            - byreflike T5,- byreflike T6>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00003B:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1655,8 +1653,8 @@
 
 } // end of class System.Action`6
 
-.class /*0200000A*/ public auto ansi sealed System.Action`7<- T1,- T2,- T3,- T4,
-                                                            - T5,- T6,- T7>
+.class /*0200000A*/ public auto ansi sealed System.Action`7<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                            - byreflike T5,- byreflike T6,- byreflike T7>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000040:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1713,8 +1711,8 @@
 
 } // end of class System.Action`7
 
-.class /*0200000B*/ public auto ansi sealed System.Action`8<- T1,- T2,- T3,- T4,
-                                                            - T5,- T6,- T7,- T8>
+.class /*0200000B*/ public auto ansi sealed System.Action`8<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                            - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000045:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1773,9 +1771,9 @@
 
 } // end of class System.Action`8
 
-.class /*0200000C*/ public auto ansi sealed System.Action`9<- T1,- T2,- T3,- T4,
-                                                            - T5,- T6,- T7,- T8,
-                                                            - T9>
+.class /*0200000C*/ public auto ansi sealed System.Action`9<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                            - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                            - byreflike T9>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000049:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1836,9 +1834,9 @@
 
 } // end of class System.Action`9
 
-.class /*0200000D*/ public auto ansi sealed System.Action`10<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10>
+.class /*0200000D*/ public auto ansi sealed System.Action`10<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00004D:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1901,9 +1899,9 @@
 
 } // end of class System.Action`10
 
-.class /*0200000E*/ public auto ansi sealed System.Action`11<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11>
+.class /*0200000E*/ public auto ansi sealed System.Action`11<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000052:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -1968,9 +1966,9 @@
 
 } // end of class System.Action`11
 
-.class /*0200000F*/ public auto ansi sealed System.Action`12<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11,- T12>
+.class /*0200000F*/ public auto ansi sealed System.Action`12<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000055:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -2038,10 +2036,10 @@
 
 } // end of class System.Action`12
 
-.class /*02000010*/ public auto ansi sealed System.Action`13<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11,- T12,
-                                                             - T13>
+.class /*02000010*/ public auto ansi sealed System.Action`13<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                             - byreflike T13>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000057:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -2111,10 +2109,10 @@
 
 } // end of class System.Action`13
 
-.class /*02000011*/ public auto ansi sealed System.Action`14<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11,- T12,
-                                                             - T13,- T14>
+.class /*02000011*/ public auto ansi sealed System.Action`14<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                             - byreflike T13,- byreflike T14>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000059:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -2186,10 +2184,10 @@
 
 } // end of class System.Action`14
 
-.class /*02000012*/ public auto ansi sealed System.Action`15<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11,- T12,
-                                                             - T13,- T14,- T15>
+.class /*02000012*/ public auto ansi sealed System.Action`15<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                             - byreflike T13,- byreflike T14,- byreflike T15>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00005E:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -2264,10 +2262,10 @@
 
 } // end of class System.Action`15
 
-.class /*02000013*/ public auto ansi sealed System.Action`16<- T1,- T2,- T3,- T4,
-                                                             - T5,- T6,- T7,- T8,
-                                                             - T9,- T10,- T11,- T12,
-                                                             - T13,- T14,- T15,- T16>
+.class /*02000013*/ public auto ansi sealed System.Action`16<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                             - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                             - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                             - byreflike T13,- byreflike T14,- byreflike T15,- byreflike T16>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000061:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -2587,7 +2585,7 @@
   } // end of method Activator::CreateInstanceFrom
 
   .method /*06000055*/ public hidebysig static 
-          !!T  CreateInstance<T>() cil managed
+          !!T  CreateInstance<byreflike T>() cil managed
   // SIG: 10 01 00 1E 00
   {
     .param type T /*2A000098*/ 
@@ -14375,7 +14373,7 @@
   } // end of property CLSCompliantAttribute::IsCompliant
 } // end of class System.CLSCompliantAttribute
 
-.class /*02000034*/ public auto ansi sealed System.Comparison`1<- T>
+.class /*02000034*/ public auto ansi sealed System.Comparison`1<- byreflike T>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A00008A*/ 
@@ -18514,7 +18512,7 @@
 
 } // end of class System.Convert
 
-.class /*02000039*/ public auto ansi sealed System.Converter`2<- TInput,+ TOutput>
+.class /*02000039*/ public auto ansi sealed System.Converter`2<- byreflike TInput,+ byreflike TOutput>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type TInput /*2A00008B*/ 
@@ -26497,7 +26495,7 @@
   .field /*04000044*/ public static literal float64 MinValue = float64(-1.7976931348623157e+308)
   .field /*04000045*/ public static literal float64 NaN = float64(0xFFF8000000000000) // -nan
   .field /*04000046*/ public static literal float64 NegativeInfinity = float64(0xFFF0000000000000) // -inf
-  .field /*04000047*/ public static literal float64 NegativeZero = float64(-0)
+  .field /*04000047*/ public static literal float64 NegativeZero = float64(-0.0000000000000000)
   .field /*04000048*/ public static literal float64 Pi = float64(3.1415926535897931)
   .field /*04000049*/ public static literal float64 PositiveInfinity = float64(0x7FF0000000000000) // inf
   .field /*0400004A*/ public static literal float64 Tau = float64(6.2831853071795862)
@@ -31677,7 +31675,7 @@
   } // end of property FormattableString::Format
 } // end of class System.FormattableString
 
-.class /*02000052*/ public auto ansi sealed System.Func`1<+ TResult>
+.class /*02000052*/ public auto ansi sealed System.Func`1<+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type TResult /*2A00008E*/ 
@@ -31714,7 +31712,7 @@
 
 } // end of class System.Func`1
 
-.class /*02000053*/ public auto ansi sealed System.Func`2<- T,+ TResult>
+.class /*02000053*/ public auto ansi sealed System.Func`2<- byreflike T,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A00008F*/ 
@@ -31756,7 +31754,7 @@
 
 } // end of class System.Func`2
 
-.class /*02000054*/ public auto ansi sealed System.Func`3<- T1,- T2,+ TResult>
+.class /*02000054*/ public auto ansi sealed System.Func`3<- byreflike T1,- byreflike T2,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T1 /*2A000091*/ 
@@ -31804,7 +31802,7 @@
 
 } // end of class System.Func`3
 
-.class /*02000055*/ public auto ansi sealed System.Func`4<- T1,- T2,- T3,+ TResult>
+.class /*02000055*/ public auto ansi sealed System.Func`4<- byreflike T1,- byreflike T2,- byreflike T3,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T1 /*2A000094*/ 
@@ -31858,8 +31856,8 @@
 
 } // end of class System.Func`4
 
-.class /*02000056*/ public auto ansi sealed System.Func`5<- T1,- T2,- T3,- T4,
-                                                          + TResult>
+.class /*02000056*/ public auto ansi sealed System.Func`5<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                          + byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000143:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -31912,8 +31910,8 @@
 
 } // end of class System.Func`5
 
-.class /*02000057*/ public auto ansi sealed System.Func`6<- T1,- T2,- T3,- T4,
-                                                          - T5,+ TResult>
+.class /*02000057*/ public auto ansi sealed System.Func`6<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                          - byreflike T5,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000145:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -31968,8 +31966,8 @@
 
 } // end of class System.Func`6
 
-.class /*02000058*/ public auto ansi sealed System.Func`7<- T1,- T2,- T3,- T4,
-                                                          - T5,- T6,+ TResult>
+.class /*02000058*/ public auto ansi sealed System.Func`7<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                          - byreflike T5,- byreflike T6,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000148:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32026,8 +32024,8 @@
 
 } // end of class System.Func`7
 
-.class /*02000059*/ public auto ansi sealed System.Func`8<- T1,- T2,- T3,- T4,
-                                                          - T5,- T6,- T7,+ TResult>
+.class /*02000059*/ public auto ansi sealed System.Func`8<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                          - byreflike T5,- byreflike T6,- byreflike T7,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00014C:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32086,9 +32084,9 @@
 
 } // end of class System.Func`8
 
-.class /*0200005A*/ public auto ansi sealed System.Func`9<- T1,- T2,- T3,- T4,
-                                                          - T5,- T6,- T7,- T8,
-                                                          + TResult>
+.class /*0200005A*/ public auto ansi sealed System.Func`9<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                          - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                          + byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00014F:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32149,9 +32147,9 @@
 
 } // end of class System.Func`9
 
-.class /*0200005B*/ public auto ansi sealed System.Func`10<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,+ TResult>
+.class /*0200005B*/ public auto ansi sealed System.Func`10<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000151:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32214,9 +32212,9 @@
 
 } // end of class System.Func`10
 
-.class /*0200005C*/ public auto ansi sealed System.Func`11<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,+ TResult>
+.class /*0200005C*/ public auto ansi sealed System.Func`11<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000153:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32281,9 +32279,9 @@
 
 } // end of class System.Func`11
 
-.class /*0200005D*/ public auto ansi sealed System.Func`12<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,+ TResult>
+.class /*0200005D*/ public auto ansi sealed System.Func`12<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000155:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32350,10 +32348,10 @@
 
 } // end of class System.Func`12
 
-.class /*0200005E*/ public auto ansi sealed System.Func`13<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,- T12,
-                                                           + TResult>
+.class /*0200005E*/ public auto ansi sealed System.Func`13<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                           + byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000158:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32423,10 +32421,10 @@
 
 } // end of class System.Func`13
 
-.class /*0200005F*/ public auto ansi sealed System.Func`14<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,- T12,
-                                                           - T13,+ TResult>
+.class /*0200005F*/ public auto ansi sealed System.Func`14<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                           - byreflike T13,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00015B:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32498,10 +32496,10 @@
 
 } // end of class System.Func`14
 
-.class /*02000060*/ public auto ansi sealed System.Func`15<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,- T12,
-                                                           - T13,- T14,+ TResult>
+.class /*02000060*/ public auto ansi sealed System.Func`15<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                           - byreflike T13,- byreflike T14,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C00015F:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32575,10 +32573,10 @@
 
 } // end of class System.Func`15
 
-.class /*02000061*/ public auto ansi sealed System.Func`16<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,- T12,
-                                                           - T13,- T14,- T15,+ TResult>
+.class /*02000061*/ public auto ansi sealed System.Func`16<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                           - byreflike T13,- byreflike T14,- byreflike T15,+ byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000162:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -32655,11 +32653,11 @@
 
 } // end of class System.Func`16
 
-.class /*02000062*/ public auto ansi sealed System.Func`17<- T1,- T2,- T3,- T4,
-                                                           - T5,- T6,- T7,- T8,
-                                                           - T9,- T10,- T11,- T12,
-                                                           - T13,- T14,- T15,- T16,
-                                                           + TResult>
+.class /*02000062*/ public auto ansi sealed System.Func`17<- byreflike T1,- byreflike T2,- byreflike T3,- byreflike T4,
+                                                           - byreflike T5,- byreflike T6,- byreflike T7,- byreflike T8,
+                                                           - byreflike T9,- byreflike T10,- byreflike T11,- byreflike T12,
+                                                           - byreflike T13,- byreflike T14,- byreflike T15,- byreflike T16,
+                                                           + byreflike TResult>
        extends System.MulticastDelegate/*0200009C*/
 {
   .custom /*0C000167:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -37677,7 +37675,7 @@
 
 } // end of class System.IComparable
 
-.class /*02000070*/ interface public abstract auto ansi beforefieldinit System.IComparable`1<- T>
+.class /*02000070*/ interface public abstract auto ansi beforefieldinit System.IComparable`1<- byreflike T>
 {
   .custom /*0C000180:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
   .method /*060009E8*/ public hidebysig newslot abstract virtual 
@@ -37851,7 +37849,7 @@
 
 } // end of class System.IDisposable
 
-.class /*02000074*/ interface public abstract auto ansi beforefieldinit System.IEquatable`1<T>
+.class /*02000074*/ interface public abstract auto ansi beforefieldinit System.IEquatable`1<byreflike T>
 {
   .custom /*0C000186:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
   .method /*060009FC*/ public hidebysig newslot abstract virtual 
@@ -54133,7 +54131,7 @@
 
 } // end of class System.PlatformNotSupportedException
 
-.class /*020000AF*/ public auto ansi sealed System.Predicate`1<- T>
+.class /*020000AF*/ public auto ansi sealed System.Predicate`1<- byreflike T>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A000135*/ 
@@ -57977,7 +57975,7 @@
   .field /*040000AD*/ public static literal float32 MinValue = float32(-3.4028235e+38)
   .field /*040000AE*/ public static literal float32 NaN = float32(0xFFC00000)
   .field /*040000AF*/ public static literal float32 NegativeInfinity = float32(0xFF800000)
-  .field /*040000B0*/ public static literal float32 NegativeZero = float32(-0)
+  .field /*040000B0*/ public static literal float32 NegativeZero = float32(-0.0000000)
   .field /*040000B1*/ public static literal float32 Pi = float32(3.1415927)
   .field /*040000B2*/ public static literal float32 PositiveInfinity = float32(0x7F800000)
   .field /*040000B3*/ public static literal float32 Tau = float32(6.2831855)
@@ -61820,9 +61818,9 @@
   } // end of method String::Create
 
   .method /*0600107B*/ public hidebysig static 
-          string  Create<TState>(int32 length,
-                                 !!TState state,
-                                 class System.Buffers.SpanAction`2/*02000360*/<char,!!TState> action) cil managed
+          string  Create<byreflike TState>(int32 length,
+                                           !!TState state,
+                                           class System.Buffers.SpanAction`2/*02000360*/<char,!!TState> action) cil managed
   // SIG: 10 01 03 0E 08 1E 00 15 12 8D 80 02 03 1E 00
   {
     .param type TState /*2A0002F4*/ 
@@ -117053,7 +117051,7 @@
   } // end of method RuntimeHelpers::InitializeArray
 
   .method /*06001E14*/ public hidebysig static 
-          bool  IsReferenceOrContainsReferences<T>() cil managed
+          bool  IsReferenceOrContainsReferences<byreflike T>() cil managed
   // SIG: 10 01 00 02
   {
     .custom /*0C001913:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -117869,8 +117867,8 @@
   .custom /*0C00063A:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 01 00 00 ) 
   .custom /*0C00063B:06001DE3*/ instance void System.Runtime.CompilerServices.NullableAttribute/*02000200*/::.ctor(uint8) /* 06001DE3 */ = ( 01 00 00 00 00 ) 
   .method /*06001E44*/ public hidebysig static 
-          !!T&  AddByteOffset<T>(!!T& source,
-                                 native int byteOffset) cil managed
+          !!T&  AddByteOffset<byreflike T>(!!T& source,
+                                           native int byteOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 18
   {
     .param type T /*2A00070B*/ 
@@ -117883,8 +117881,8 @@
   } // end of method Unsafe::AddByteOffset
 
   .method /*06001E45*/ public hidebysig static 
-          !!T&  AddByteOffset<T>(!!T& source,
-                                 native uint byteOffset) cil managed
+          !!T&  AddByteOffset<byreflike T>(!!T& source,
+                                           native uint byteOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 19
   {
     .custom /*0C001926:06000382*/ instance void System.CLSCompliantAttribute/*02000033*/::.ctor(bool) /* 06000382 */ = ( 01 00 00 00 00 ) 
@@ -117898,8 +117896,8 @@
   } // end of method Unsafe::AddByteOffset
 
   .method /*06001E46*/ public hidebysig static 
-          void*  Add<T>(void* source,
-                        int32 elementOffset) cil managed
+          void*  Add<byreflike T>(void* source,
+                                  int32 elementOffset) cil managed
   // SIG: 10 01 02 0F 01 0F 01 08
   {
     .custom /*0C001927:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -117914,8 +117912,8 @@
   } // end of method Unsafe::Add
 
   .method /*06001E47*/ public hidebysig static 
-          !!T&  Add<T>(!!T& source,
-                       int32 elementOffset) cil managed
+          !!T&  Add<byreflike T>(!!T& source,
+                                 int32 elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 08
   {
     .param type T /*2A00070E*/ 
@@ -117928,8 +117926,8 @@
   } // end of method Unsafe::Add
 
   .method /*06001E48*/ public hidebysig static 
-          !!T&  Add<T>(!!T& source,
-                       native int elementOffset) cil managed
+          !!T&  Add<byreflike T>(!!T& source,
+                                 native int elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 18
   {
     .param type T /*2A00070F*/ 
@@ -117942,8 +117940,8 @@
   } // end of method Unsafe::Add
 
   .method /*06001E49*/ public hidebysig static 
-          !!T&  Add<T>(!!T& source,
-                       native uint elementOffset) cil managed
+          !!T&  Add<byreflike T>(!!T& source,
+                                 native uint elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 19
   {
     .custom /*0C001929:06000382*/ instance void System.CLSCompliantAttribute/*02000033*/::.ctor(bool) /* 06000382 */ = ( 01 00 00 00 00 ) 
@@ -117957,8 +117955,8 @@
   } // end of method Unsafe::Add
 
   .method /*06001E4A*/ public hidebysig static 
-          bool  AreSame<T>([in] !!T& left,
-                           [in] !!T& right) cil managed
+          bool  AreSame<byreflike T>([in] !!T& left,
+                                     [in] !!T& right) cil managed
   // SIG: 10 01 02 02 10 1E 00 10 1E 00
   {
     .param type T /*2A000711*/ 
@@ -117977,7 +117975,7 @@
   } // end of method Unsafe::AreSame
 
   .method /*06001E4B*/ public hidebysig static 
-          void*  AsPointer<T>(!!T& 'value') cil managed
+          void*  AsPointer<byreflike T>(!!T& 'value') cil managed
   // SIG: 10 01 01 0F 01 10 1E 00
   {
     .custom /*0C00192A:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -117994,7 +117992,7 @@
   } // end of method Unsafe::AsPointer
 
   .method /*06001E4C*/ public hidebysig static 
-          !!T&  AsRef<T>(void* source) cil managed
+          !!T&  AsRef<byreflike T>(void* source) cil managed
   // SIG: 10 01 01 10 1E 00 0F 01
   {
     .custom /*0C00192C:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118011,7 +118009,7 @@
   } // end of method Unsafe::AsRef
 
   .method /*06001E4D*/ public hidebysig static 
-          !!T&  AsRef<T>([in] !!T& source) cil managed
+          !!T&  AsRef<byreflike T>([in] !!T& source) cil managed
   // SIG: 10 01 01 10 1E 00 10 1E 00
   {
     .param type T /*2A000714*/ 
@@ -118041,7 +118039,7 @@
   } // end of method Unsafe::As
 
   .method /*06001E4F*/ public hidebysig static 
-          !!TTo&  As<TFrom,TTo>(!!TFrom& source) cil managed
+          !!TTo&  As<byreflike TFrom,byreflike TTo>(!!TFrom& source) cil managed
   // SIG: 10 02 01 10 1E 01 10 1E 00
   {
     .param type TFrom /*2A000716*/ 
@@ -118056,7 +118054,7 @@
   } // end of method Unsafe::As
 
   .method /*06001E50*/ public hidebysig static 
-          !!TTo  BitCast<TFrom,TTo>(!!TFrom source) cil managed
+          !!TTo  BitCast<byreflike TFrom,byreflike TTo>(!!TFrom source) cil managed
   // SIG: 10 02 01 1E 01 1E 00
   {
     .param type TFrom /*2A000718*/ 
@@ -118071,8 +118069,8 @@
   } // end of method Unsafe::BitCast
 
   .method /*06001E51*/ public hidebysig static 
-          native int  ByteOffset<T>([in] !!T& origin,
-                                    [in] !!T& target) cil managed
+          native int  ByteOffset<byreflike T>([in] !!T& origin,
+                                              [in] !!T& target) cil managed
   // SIG: 10 01 02 18 10 1E 00 10 1E 00
   {
     .param type T /*2A00071A*/ 
@@ -118149,8 +118147,8 @@
   } // end of method Unsafe::CopyBlockUnaligned
 
   .method /*06001E56*/ public hidebysig static 
-          void  Copy<T>(void* destination,
-                        [in] !!T& source) cil managed
+          void  Copy<byreflike T>(void* destination,
+                                  [in] !!T& source) cil managed
   // SIG: 10 01 02 01 0F 01 10 1E 00
   {
     .custom /*0C001935:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118167,8 +118165,8 @@
   } // end of method Unsafe::Copy
 
   .method /*06001E57*/ public hidebysig static 
-          void  Copy<T>(!!T& destination,
-                        void* source) cil managed
+          void  Copy<byreflike T>(!!T& destination,
+                                  void* source) cil managed
   // SIG: 10 01 02 01 10 1E 00 0F 01
   {
     .custom /*0C001937:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118238,8 +118236,8 @@
   } // end of method Unsafe::InitBlockUnaligned
 
   .method /*06001E5C*/ public hidebysig static 
-          bool  IsAddressGreaterThan<T>([in] !!T& left,
-                                        [in] !!T& right) cil managed
+          bool  IsAddressGreaterThan<byreflike T>([in] !!T& left,
+                                                  [in] !!T& right) cil managed
   // SIG: 10 01 02 02 10 1E 00 10 1E 00
   {
     .param type T /*2A00071D*/ 
@@ -118258,8 +118256,8 @@
   } // end of method Unsafe::IsAddressGreaterThan
 
   .method /*06001E5D*/ public hidebysig static 
-          bool  IsAddressLessThan<T>([in] !!T& left,
-                                     [in] !!T& right) cil managed
+          bool  IsAddressLessThan<byreflike T>([in] !!T& left,
+                                               [in] !!T& right) cil managed
   // SIG: 10 01 02 02 10 1E 00 10 1E 00
   {
     .param type T /*2A00071E*/ 
@@ -118278,7 +118276,7 @@
   } // end of method Unsafe::IsAddressLessThan
 
   .method /*06001E5E*/ public hidebysig static 
-          bool  IsNullRef<T>([in] !!T& source) cil managed
+          bool  IsNullRef<byreflike T>([in] !!T& source) cil managed
   // SIG: 10 01 01 02 10 1E 00
   {
     .param type T /*2A00071F*/ 
@@ -118293,7 +118291,7 @@
   } // end of method Unsafe::IsNullRef
 
   .method /*06001E5F*/ public hidebysig static 
-          !!T&  NullRef<T>() cil managed
+          !!T&  NullRef<byreflike T>() cil managed
   // SIG: 10 01 00 10 1E 00
   {
     .param type T /*2A000720*/ 
@@ -118306,7 +118304,7 @@
   } // end of method Unsafe::NullRef
 
   .method /*06001E60*/ public hidebysig static 
-          !!T  ReadUnaligned<T>([in] uint8& source) cil managed
+          !!T  ReadUnaligned<byreflike T>([in] uint8& source) cil managed
   // SIG: 10 01 01 1E 00 10 05
   {
     .param type T /*2A000721*/ 
@@ -118322,7 +118320,7 @@
   } // end of method Unsafe::ReadUnaligned
 
   .method /*06001E61*/ public hidebysig static 
-          !!T  ReadUnaligned<T>(void* source) cil managed
+          !!T  ReadUnaligned<byreflike T>(void* source) cil managed
   // SIG: 10 01 01 1E 00 0F 01
   {
     .custom /*0C00193F:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118339,7 +118337,7 @@
   } // end of method Unsafe::ReadUnaligned
 
   .method /*06001E62*/ public hidebysig static 
-          !!T  Read<T>(void* source) cil managed
+          !!T  Read<byreflike T>(void* source) cil managed
   // SIG: 10 01 01 1E 00 0F 01
   {
     .custom /*0C001941:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118356,7 +118354,7 @@
   } // end of method Unsafe::Read
 
   .method /*06001E63*/ public hidebysig static 
-          int32  SizeOf<T>() cil managed
+          int32  SizeOf<byreflike T>() cil managed
   // SIG: 10 01 00 08
   {
     .custom /*0C001943:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
@@ -118368,7 +118366,7 @@
   } // end of method Unsafe::SizeOf
 
   .method /*06001E64*/ public hidebysig static 
-          void  SkipInit<T>([out] !!T& 'value') cil managed
+          void  SkipInit<byreflike T>([out] !!T& 'value') cil managed
   // SIG: 10 01 01 01 10 1E 00
   {
     .param type T /*2A000725*/ 
@@ -118381,8 +118379,8 @@
   } // end of method Unsafe::SkipInit
 
   .method /*06001E65*/ public hidebysig static 
-          !!T&  SubtractByteOffset<T>(!!T& source,
-                                      native int byteOffset) cil managed
+          !!T&  SubtractByteOffset<byreflike T>(!!T& source,
+                                                native int byteOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 18
   {
     .param type T /*2A000726*/ 
@@ -118395,8 +118393,8 @@
   } // end of method Unsafe::SubtractByteOffset
 
   .method /*06001E66*/ public hidebysig static 
-          !!T&  SubtractByteOffset<T>(!!T& source,
-                                      native uint byteOffset) cil managed
+          !!T&  SubtractByteOffset<byreflike T>(!!T& source,
+                                                native uint byteOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 19
   {
     .custom /*0C001944:06000382*/ instance void System.CLSCompliantAttribute/*02000033*/::.ctor(bool) /* 06000382 */ = ( 01 00 00 00 00 ) 
@@ -118410,8 +118408,8 @@
   } // end of method Unsafe::SubtractByteOffset
 
   .method /*06001E67*/ public hidebysig static 
-          void*  Subtract<T>(void* source,
-                             int32 elementOffset) cil managed
+          void*  Subtract<byreflike T>(void* source,
+                                       int32 elementOffset) cil managed
   // SIG: 10 01 02 0F 01 0F 01 08
   {
     .custom /*0C001945:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118426,8 +118424,8 @@
   } // end of method Unsafe::Subtract
 
   .method /*06001E68*/ public hidebysig static 
-          !!T&  Subtract<T>(!!T& source,
-                            int32 elementOffset) cil managed
+          !!T&  Subtract<byreflike T>(!!T& source,
+                                      int32 elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 08
   {
     .param type T /*2A000729*/ 
@@ -118440,8 +118438,8 @@
   } // end of method Unsafe::Subtract
 
   .method /*06001E69*/ public hidebysig static 
-          !!T&  Subtract<T>(!!T& source,
-                            native int elementOffset) cil managed
+          !!T&  Subtract<byreflike T>(!!T& source,
+                                      native int elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 18
   {
     .param type T /*2A00072A*/ 
@@ -118454,8 +118452,8 @@
   } // end of method Unsafe::Subtract
 
   .method /*06001E6A*/ public hidebysig static 
-          !!T&  Subtract<T>(!!T& source,
-                            native uint elementOffset) cil managed
+          !!T&  Subtract<byreflike T>(!!T& source,
+                                      native uint elementOffset) cil managed
   // SIG: 10 01 02 10 1E 00 10 1E 00 19
   {
     .custom /*0C001947:06000382*/ instance void System.CLSCompliantAttribute/*02000033*/::.ctor(bool) /* 06000382 */ = ( 01 00 00 00 00 ) 
@@ -118483,8 +118481,8 @@
   } // end of method Unsafe::Unbox
 
   .method /*06001E6C*/ public hidebysig static 
-          void  WriteUnaligned<T>(uint8& destination,
-                                  !!T 'value') cil managed
+          void  WriteUnaligned<byreflike T>(uint8& destination,
+                                            !!T 'value') cil managed
   // SIG: 10 01 02 01 10 05 1E 00
   {
     .param type T /*2A00072D*/ 
@@ -118496,8 +118494,8 @@
   } // end of method Unsafe::WriteUnaligned
 
   .method /*06001E6D*/ public hidebysig static 
-          void  WriteUnaligned<T>(void* destination,
-                                  !!T 'value') cil managed
+          void  WriteUnaligned<byreflike T>(void* destination,
+                                            !!T 'value') cil managed
   // SIG: 10 01 02 01 0F 01 1E 00
   {
     .custom /*0C001949:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -118513,8 +118511,8 @@
   } // end of method Unsafe::WriteUnaligned
 
   .method /*06001E6E*/ public hidebysig static 
-          void  Write<T>(void* destination,
-                         !!T 'value') cil managed
+          void  Write<byreflike T>(void* destination,
+                                   !!T 'value') cil managed
   // SIG: 10 01 02 01 0F 01 1E 00
   {
     .custom /*0C00194B:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 00 00 00 ) 
@@ -165355,7 +165353,7 @@
   } // end of property ReadOnlyDictionary`2::Values
 } // end of class System.Collections.ObjectModel.ReadOnlyDictionary`2
 
-.class /*02000343*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAlternateEqualityComparer`2<- TAlternate,T>
+.class /*02000343*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAlternateEqualityComparer`2<- byreflike TAlternate,byreflike T>
 {
   .custom /*0C0009D0:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 01 00 00 ) 
   .param type TAlternate /*2A000215*/ 
@@ -165386,7 +165384,7 @@
 
 } // end of class System.Collections.Generic.IAlternateEqualityComparer`2
 
-.class /*02000344*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAsyncEnumerable`1<+ T>
+.class /*02000344*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAsyncEnumerable`1<+ byreflike T>
 {
   .custom /*0C0009D3:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 01 00 00 ) 
   .param type T /*2A000217*/ 
@@ -165402,7 +165400,7 @@
 
 } // end of class System.Collections.Generic.IAsyncEnumerable`1
 
-.class /*02000345*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAsyncEnumerator`1<+ T>
+.class /*02000345*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IAsyncEnumerator`1<+ byreflike T>
        implements System.IAsyncDisposable/*0200006C*/
 {
   .param type T /*2A000218*/ 
@@ -165504,7 +165502,7 @@
   } // end of property ICollection`1::IsReadOnly
 } // end of class System.Collections.Generic.ICollection`1
 
-.class /*02000347*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IComparer`1<- T>
+.class /*02000347*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IComparer`1<- byreflike T>
 {
   .custom /*0C0009DA:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
   .method /*06002AB9*/ public hidebysig newslot abstract virtual 
@@ -165616,7 +165614,7 @@
   } // end of property IDictionary`2::Values
 } // end of class System.Collections.Generic.IDictionary`2
 
-.class /*02000349*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEnumerable`1<+ T>
+.class /*02000349*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEnumerable`1<+ byreflike T>
        implements System.Collections.IEnumerable/*02000339*/
 {
   .param type T /*2A00021D*/ 
@@ -165632,7 +165630,7 @@
 
 } // end of class System.Collections.Generic.IEnumerable`1
 
-.class /*0200034A*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEnumerator`1<+ T>
+.class /*0200034A*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEnumerator`1<+ byreflike T>
        implements System.Collections.IEnumerator/*0200033A*/,
                   System.IDisposable/*02000073*/
 {
@@ -165654,7 +165652,7 @@
   } // end of property IEnumerator`1::Current
 } // end of class System.Collections.Generic.IEnumerator`1
 
-.class /*0200034B*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEqualityComparer`1<- T>
+.class /*0200034B*/ interface public abstract auto ansi beforefieldinit System.Collections.Generic.IEqualityComparer`1<- byreflike T>
 {
   .custom /*0C0009E5:06001DE5*/ instance void System.Runtime.CompilerServices.NullableContextAttribute/*02000201*/::.ctor(uint8) /* 06001DE5 */ = ( 01 00 02 00 00 ) 
   .method /*06002AC4*/ public hidebysig newslot abstract virtual 
@@ -167316,7 +167314,7 @@
   .field /*040004C4*/ public static literal valuetype System.Buffers.OperationStatus/*0200035C*/ InvalidData = int32(0x00000003)
 } // end of class System.Buffers.OperationStatus
 
-.class /*0200035D*/ public auto ansi sealed System.Buffers.ReadOnlySpanAction`2<T,- TArg>
+.class /*0200035D*/ public auto ansi sealed System.Buffers.ReadOnlySpanAction`2<T,- byreflike TArg>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A00022C*/ 
@@ -167448,7 +167446,7 @@
 
 } // end of class System.Buffers.SearchValues`1
 
-.class /*02000360*/ public auto ansi sealed System.Buffers.SpanAction`2<T,- TArg>
+.class /*02000360*/ public auto ansi sealed System.Buffers.SpanAction`2<T,- byreflike TArg>
        extends System.MulticastDelegate/*0200009C*/
 {
   .param type T /*2A00022F*/ 

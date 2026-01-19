@@ -1822,7 +1822,7 @@ std::vector<std::unique_ptr<int>> VectorUniquePtrSource() {
 
 TEST(MockMethodTest, CanReturnMoveOnlyValue_Return) {
   MockClass mock;
-  std::unique_ptr<int> i(new int(19));
+  std::unique_ptr<int> i = std::make_unique<int>(19);
   EXPECT_CALL(mock, MakeUnique()).WillOnce(Return(ByMove(std::move(i))));
   EXPECT_CALL(mock, MakeVectorUnique())
       .WillOnce(Return(ByMove(VectorUniquePtrSource())));
@@ -1845,7 +1845,7 @@ TEST(MockMethodTest, CanReturnMoveOnlyValue_Return) {
 TEST(MockMethodTest, CanReturnMoveOnlyValue_DoAllReturn) {
   testing::MockFunction<void()> mock_function;
   MockClass mock;
-  std::unique_ptr<int> i(new int(19));
+  std::unique_ptr<int> i = std::make_unique<int>(19);
   EXPECT_CALL(mock_function, Call());
   EXPECT_CALL(mock, MakeUnique())
       .WillOnce(DoAll(InvokeWithoutArgs(&mock_function,
@@ -2170,7 +2170,7 @@ TEST(FunctorActionTest, TypeConversion) {
   EXPECT_EQ(7, d.Perform(std::make_tuple(1)));
 
   // Ensure creation of an empty action succeeds.
-  Action<void(int)>(nullptr);
+  (void)Action<void(int)>(nullptr);
 }
 
 TEST(FunctorActionTest, UnusedArguments) {

@@ -314,7 +314,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
 
                 chunkGenerator = SpanChunkGenerator.Null;
                 SetAcceptedCharacters(AcceptedCharactersInternal.None);
-                var transition = GetNodeWithEditHandler(SyntaxFactory.CSharpTransition(transitionToken, chunkGenerator));
+                var transition = SyntaxFactory.CSharpTransition(transitionToken, chunkGenerator, GetEditHandler());
 
                 if (At(SyntaxKind.LeftBrace))
                 {
@@ -997,7 +997,8 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
                                   not SyntaxKind.LeftBrace and
                                   not SyntaxKind.LeftParenthesis and
                                   not SyntaxKind.LeftBracket and
-                                  not SyntaxKind.RightBrace,
+                                  not SyntaxKind.RightBrace and
+                                  not SyntaxKind.Keyword,
                 ref read.AsRef());
 
             if ((!Context.Options.AllowRazorInAllCodeBlocks && At(SyntaxKind.LeftBrace)) ||
@@ -1005,14 +1006,8 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
                 At(SyntaxKind.LeftBracket))
             {
                 Accept(in read);
-                if (Balance(builder, BalancingModes.AllowCommentsAndTemplates | BalancingModes.BacktrackOnFailure))
+                if (!TryBalanceBlock(builder))
                 {
-                    TryAccept(SyntaxKind.RightBrace);
-                }
-                else
-                {
-                    // Recovery
-                    AcceptUntil(SyntaxKind.LessThan, SyntaxKind.RightBrace);
                     return;
                 }
             }
@@ -1106,6 +1101,23 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
                 Accept(in read);
                 return;
             }
+            else if (At(SyntaxKind.Keyword))
+            {
+                Accept(in read);
+                if (CurrentToken.Content == "switch")
+                {
+                    AcceptUntil(SyntaxKind.LeftBrace); // TODO: how do we do error recovery at this point?
+                    if (!TryBalanceBlock(builder))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    // unknown keyword, continue parsing
+                    AcceptAndMoveNext();
+                }
+            }
             else
             {
                 _tokenizer.Reset(bookmark);
@@ -1113,6 +1125,22 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
                 AcceptUntil(SyntaxKind.LessThan, SyntaxKind.LeftBrace, SyntaxKind.RightBrace);
                 return;
             }
+        }
+
+        bool TryBalanceBlock(SyntaxListBuilder<RazorSyntaxNode> builder)
+        {
+            if (Balance(builder, BalancingModes.AllowCommentsAndTemplates | BalancingModes.BacktrackOnFailure))
+            {
+                TryAccept(SyntaxKind.RightBrace);
+            }
+            else
+            {
+                // Recovery
+                AcceptUntil(SyntaxKind.LessThan, SyntaxKind.RightBrace);
+                return false;
+            }
+
+            return true;
         }
     }
 
@@ -1893,17 +1921,17 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
                 var node = OutputTokensAsStatementLiteral();
                 if (node == null && directiveBuilder.Count == 0)
                 {
-                    node = SyntaxFactory.CSharpStatementLiteral(new SyntaxList<SyntaxToken>(SyntaxFactory.MissingToken(expectedTokenKindIfMissing)), chunkGenerator);
+                    node = SyntaxFactory.CSharpStatementLiteral(SyntaxFactory.MissingToken(expectedTokenKindIfMissing), chunkGenerator, editHandler: null);
                 }
+
                 directiveBuilder.Add(node);
                 var directiveCodeBlock = SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList());
 
                 var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
-                var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
+                var directive = SyntaxFactory.RazorDirective(transition, directiveBody, descriptor);
 
                 var diagnostics = directiveErrorSink.GetErrorsAndClear();
                 directive = directive.WithDiagnosticsGreen(diagnostics);
-                directive = directive.WithDirectiveDescriptor(descriptor);
                 return directive;
             }
         }
@@ -2709,7 +2737,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
         var directiveBody = SyntaxFactory.RazorDirectiveBody(keyword, csharpCode: null);
 
         // transition could be null if we're already inside a code block.
-        transition = transition ?? SyntaxFactory.CSharpTransition(SyntaxFactory.MissingToken(SyntaxKind.Transition), chunkGenerator: null);
+        transition = transition ?? SyntaxFactory.CSharpTransition(SyntaxFactory.MissingToken(SyntaxKind.Transition));
         var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
         builder.Add(directive);
     }
@@ -2811,7 +2839,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
             return null;
         }
 
-        return GetNodeWithEditHandler(SyntaxFactory.CSharpStatementLiteral(tokens, chunkGenerator));
+        return SyntaxFactory.CSharpStatementLiteral(tokens, chunkGenerator, GetEditHandler());
     }
 
     private CSharpExpressionLiteralSyntax? OutputTokensAsExpressionLiteral()
@@ -2822,7 +2850,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
             return null;
         }
 
-        return GetNodeWithEditHandler(SyntaxFactory.CSharpExpressionLiteral(tokens, chunkGenerator));
+        return SyntaxFactory.CSharpExpressionLiteral(tokens, chunkGenerator, GetEditHandler());
     }
 
     private CSharpEphemeralTextLiteralSyntax? OutputTokensAsEphemeralLiteral()
@@ -2833,7 +2861,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
             return null;
         }
 
-        return GetNodeWithEditHandler(SyntaxFactory.CSharpEphemeralTextLiteral(tokens, chunkGenerator));
+        return SyntaxFactory.CSharpEphemeralTextLiteral(tokens, chunkGenerator, GetEditHandler());
     }
 
     private UnclassifiedTextLiteralSyntax? OutputTokensAsUnclassifiedLiteral()
@@ -2844,7 +2872,7 @@ internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
             return null;
         }
 
-        return GetNodeWithEditHandler(SyntaxFactory.UnclassifiedTextLiteral(tokens, chunkGenerator));
+        return SyntaxFactory.UnclassifiedTextLiteral(tokens, chunkGenerator, GetEditHandler());
     }
 
     private void OtherParserBlock(in SyntaxListBuilder<RazorSyntaxNode> builder)

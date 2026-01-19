@@ -7,23 +7,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax;
 
 internal partial class MarkupStartTagSyntax
 {
-    public bool IsMarkupTransition
-        => ((InternalSyntax.MarkupStartTagSyntax)Green).IsMarkupTransition;
-
     public string GetTagNameWithOptionalBang()
     {
         return Name.IsMissing ? string.Empty : Bang.Content + Name.Content;
     }
 
-    public bool IsSelfClosing()
-    {
-        return ForwardSlash.Kind != SyntaxKind.None &&
-            !ForwardSlash.IsMissing &&
-            !CloseAngle.IsMissing;
-    }
-
     public bool IsVoidElement()
     {
         return ParserHelpers.VoidElements.Contains(Name.Content);
+    }
+
+    public override BaseMarkupEndTagSyntax? GetEndTag()
+    {
+        return (Parent as MarkupElementSyntax)?.EndTag;
     }
 }

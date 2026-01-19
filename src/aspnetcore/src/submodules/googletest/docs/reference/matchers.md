@@ -1,5 +1,7 @@
 # Matchers Reference
 
+<!-- disableFinding(LINK_RELATIVE_G3DOC) -->
+
 A **matcher** matches a *single* argument. You can use it inside `ON_CALL()` or
 `EXPECT_CALL()`, or use it to validate a value directly using two macros:
 
@@ -49,6 +51,7 @@ Matcher                     | Description
 | `NotNull()`            | `argument` is a non-null pointer (raw or smart).    |
 | `Optional(m)`          | `argument` is `optional<>` that contains a value matching `m`. (For testing whether an `optional<>` is set, check for equality with `nullopt`. You may need to use `Eq(nullopt)` if the inner type doesn't have `==`.)|
 | `VariantWith<T>(m)`    | `argument` is `variant<>` that holds the alternative of type T with a value matching `m`. |
+| `AnyWith<T>(m)`        | `argument` is `any<>` that holds a value of type T with a value matching `m`. |
 | `Ref(variable)`        | `argument` is a reference to `variable`.            |
 | `TypedEq<type>(value)` | `argument` has type `type` and is equal to `value`. You may need to use this instead of `Eq(value)` when the mock function is overloaded. |
 
@@ -295,6 +298,13 @@ which must be a permanent callback.
 | `Value(value, m)` | evaluates to `true` if `value` matches `m`. |
 
 ## Defining Matchers
+
+{: .callout .note}
+Note: full details about defining new matchers are in the
+[cookbook](../gmock_cook_book.md#NewMatchers). In particular, if `MATCHER`
+macros are not sufficient, you can directly implement
+[monomorphic](../gmock_cook_book.md#MonomorphicMatchers) or
+[polymorphic](../gmock_cook_book.md#PolymorphicMatchers) matchers.
 
 | Macro                                | Description                           |
 | :----------------------------------- | :------------------------------------ |

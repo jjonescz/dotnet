@@ -1,5 +1,4 @@
 
-//  Microsoft (R) .NET IL Disassembler.  Version 5.0.0
 
 
 // ----- DOS Header:
@@ -1163,9 +1162,9 @@
 .assembly /*20000001*/ noplatform System.Runtime
 {
   .custom instance void System.Reflection.AssemblyMetadataAttribute::.ctor(string,
-                                                                                        string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
-                                                                                                    2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
-                                                                                                    2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
+                                                                           string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
+                                                                                       2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
+                                                                                       2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
   .custom /*0C000006:06001D29*/ instance void System.Runtime.CompilerServices.ExtensionAttribute/*020001DF*/::.ctor() /* 06001D29 */ = ( 01 00 00 00 ) 
   .custom /*0C000007:06001CEE*/ instance void System.Runtime.CompilerServices.CompilationRelaxationsAttribute/*020001CA*/::.ctor(int32) /* 06001CEE */ = ( 01 00 08 00 00 00 00 00 ) 
   .custom /*0C000008:06001D67*/ instance void System.Runtime.CompilerServices.RuntimeCompatibilityAttribute/*02000203*/::.ctor() /* 06001D67 */ = ( 01 00 01 00 54 02 16 57 72 61 70 4E 6F 6E 45 78   // ....T..WrapNonEx
@@ -1236,7 +1235,6 @@
 .stackreserve 0x00100000
 .subsystem 0x0003       // WINDOWS_CUI
 .corflags 0x00000009    //  ILONLY
-// Image base: 0x00007FAD2F005000
 
 
 // =============== CLASS MEMBERS DECLARATION ===================
@@ -26212,7 +26210,7 @@
   .field /*04000047*/ public static literal float64 MinValue = float64(-1.7976931348623157e+308)
   .field /*04000048*/ public static literal float64 NaN = float64(0xFFF8000000000000) // -nan
   .field /*04000049*/ public static literal float64 NegativeInfinity = float64(0xFFF0000000000000) // -inf
-  .field /*0400004A*/ public static literal float64 NegativeZero = float64(-0)
+  .field /*0400004A*/ public static literal float64 NegativeZero = float64(-0.0000000000000000)
   .field /*0400004B*/ public static literal float64 Pi = float64(3.1415926535897931)
   .field /*0400004C*/ public static literal float64 PositiveInfinity = float64(0x7FF0000000000000) // inf
   .field /*0400004D*/ public static literal float64 Tau = float64(6.2831853071795862)
@@ -57266,7 +57264,7 @@
   .field /*040000B0*/ public static literal float32 MinValue = float32(-3.4028235e+38)
   .field /*040000B1*/ public static literal float32 NaN = float32(0xFFC00000)
   .field /*040000B2*/ public static literal float32 NegativeInfinity = float32(0xFF800000)
-  .field /*040000B3*/ public static literal float32 NegativeZero = float32(-0)
+  .field /*040000B3*/ public static literal float32 NegativeZero = float32(-0.0000000)
   .field /*040000B4*/ public static literal float32 Pi = float32(3.1415927)
   .field /*040000B5*/ public static literal float32 PositiveInfinity = float32(0x7F800000)
   .field /*040000B6*/ public static literal float32 Tau = float32(6.2831855)

@@ -21,11 +21,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.ExternalAccess.Razor.Features;
 using Microsoft.CodeAnalysis.Razor.Formatting;
-using Microsoft.CodeAnalysis.Razor.Logging;
 using Microsoft.CodeAnalysis.Razor.ProjectEngineHost;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Razor.Protocol;
-using Microsoft.CodeAnalysis.Razor.Telemetry;
+using Microsoft.CodeAnalysis.Razor.Settings;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 using Moq;
@@ -37,7 +36,7 @@ namespace Microsoft.AspNetCore.Razor.LanguageServer.Formatting;
 
 public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
 {
-    private static readonly AsyncLazy<ImmutableArray<TagHelperDescriptor>> s_standardTagHelpers = AsyncLazy.Create(GetStandardTagHelpersAsync);
+    private static readonly AsyncLazy<TagHelperCollection> s_standardTagHelpers = AsyncLazy.Create(GetStandardTagHelpersAsync);
 
     private readonly HtmlFormattingService _htmlFormattingService;
     private readonly FormattingTestContext _context;
@@ -47,8 +46,6 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
     private protected FormattingTestBase(FormattingTestContext context, HtmlFormattingService htmlFormattingService, ITestOutputHelper testOutput)
         : base(testOutput)
     {
-        ITestOnlyLoggerExtensions.TestOnlyLoggingEnabled = true;
-
         _htmlFormattingService = htmlFormattingService;
         _context = context;
     }
@@ -59,16 +56,21 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
         int tabSize = 4,
         bool insertSpaces = true,
         RazorFileKind? fileKind = null,
-        ImmutableArray<TagHelperDescriptor> tagHelpers = default,
+        TagHelperCollection? tagHelpers = null,
         bool allowDiagnostics = false,
         bool codeBlockBraceOnNextLine = false,
+        AttributeIndentStyle attributeIndentStyle = AttributeIndentStyle.AlignWithFirst,
         bool inGlobalNamespace = false,
         bool debugAssertsEnabled = true,
         RazorCSharpSyntaxFormattingOptions? csharpSyntaxFormattingOptions = null)
     {
         (input, expected) = ProcessFormattingContext(input, expected);
 
-        var razorLSPOptions = RazorLSPOptions.Default with { CodeBlockBraceOnNextLine = codeBlockBraceOnNextLine };
+        var razorLSPOptions = RazorLSPOptions.Default with
+        {
+            CodeBlockBraceOnNextLine = codeBlockBraceOnNextLine,
+            AttributeIndentStyle = attributeIndentStyle,
+        };
 
         csharpSyntaxFormattingOptions ??= RazorCSharpSyntaxFormattingOptions.Default;
 
@@ -81,7 +83,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
         int tabSize,
         bool insertSpaces,
         RazorFileKind? fileKind,
-        ImmutableArray<TagHelperDescriptor> tagHelpers,
+        TagHelperCollection? tagHelpers,
         bool allowDiagnostics,
         RazorLSPOptions? razorLSPOptions,
         bool inGlobalNamespace,
@@ -90,7 +92,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
     {
         // Arrange
         var fileKindValue = fileKind ?? RazorFileKind.Component;
-        tagHelpers = tagHelpers.NullToEmpty();
+        tagHelpers ??= [];
 
         TestFileMarkupParser.GetSpans(input, out input, out ImmutableArray<TextSpan> spans);
 
@@ -99,7 +101,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
             ? null
             : source.GetLinePositionSpan(spans.Single());
 
-        tagHelpers = tagHelpers.AddRange(await s_standardTagHelpers.GetValueAsync(DisposalToken));
+        tagHelpers = TagHelperCollection.Merge(tagHelpers, await s_standardTagHelpers.GetValueAsync(DisposalToken));
 
         var path = "file:///path/to/Document." + fileKindValue.ToString();
         var uri = new Uri(path);
@@ -109,11 +111,11 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
             TabSize = tabSize,
             InsertSpaces = insertSpaces,
         };
-        var razorOptions = RazorFormattingOptions.From(options, codeBlockBraceOnNextLine: razorLSPOptions?.CodeBlockBraceOnNextLine ?? false, csharpSyntaxFormattingOptions);
+        var razorOptions = RazorFormattingOptions.From(options, codeBlockBraceOnNextLine: razorLSPOptions?.CodeBlockBraceOnNextLine ?? false, razorLSPOptions?.AttributeIndentStyle ?? AttributeIndentStyle.AlignWithFirst, csharpSyntaxFormattingOptions);
 
         var languageServerFeatureOptions = new TestLanguageServerFeatureOptions();
 
-        var formattingService = await TestRazorFormattingService.CreateWithFullSupportAsync(LoggerFactory, codeDocument, razorLSPOptions, languageServerFeatureOptions, debugAssertsEnabled);
+        var formattingService = await TestRazorFormattingService.CreateWithFullSupportAsync(LoggerFactory, TestOutputHelper, codeDocument, razorLSPOptions, languageServerFeatureOptions, debugAssertsEnabled);
         var documentContext = new DocumentContext(uri, documentSnapshot, projectContext: null);
 
         var client = new FormattingLanguageServerClient(_htmlFormattingService, LoggerFactory);
@@ -169,13 +171,13 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
             filePathService, new TestDocumentContextFactory(), LoggerFactory);
         var languageKind = codeDocument.GetLanguageKind(positionAfterTrigger, rightAssociative: false);
 
-        var formattingService = await TestRazorFormattingService.CreateWithFullSupportAsync(LoggerFactory, codeDocument, razorLSPOptions, languageServerFeatureOptions);
+        var formattingService = await TestRazorFormattingService.CreateWithFullSupportAsync(LoggerFactory, TestOutputHelper, codeDocument, razorLSPOptions, languageServerFeatureOptions, debugAssertsEnabled: true);
         var options = new FormattingOptions()
         {
             TabSize = tabSize,
             InsertSpaces = insertSpaces,
         };
-        var razorOptions = RazorFormattingOptions.From(options, codeBlockBraceOnNextLine: razorLSPOptions?.CodeBlockBraceOnNextLine ?? false);
+        var razorOptions = RazorFormattingOptions.From(options, codeBlockBraceOnNextLine: razorLSPOptions?.CodeBlockBraceOnNextLine ?? false, razorLSPOptions?.AttributeIndentStyle ?? AttributeIndentStyle.AlignWithFirst);
 
         var documentContext = new DocumentContext(uri, documentSnapshot, projectContext: null);
 
@@ -232,7 +234,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
     private (RazorCodeDocument, IDocumentSnapshot) CreateCodeDocumentAndSnapshot(
         SourceText text,
         string path,
-        ImmutableArray<TagHelperDescriptor> tagHelpers,
+        TagHelperCollection tagHelpers,
         RazorFileKind? fileKind = null,
         bool allowDiagnostics = false,
         bool inGlobalNamespace = false)
@@ -306,7 +308,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
         RazorProjectEngine projectEngine,
         ImmutableArray<IDocumentSnapshot> imports,
         ImmutableArray<RazorSourceDocument> importDocuments,
-        ImmutableArray<TagHelperDescriptor> tagHelpers,
+        TagHelperCollection tagHelpers,
         bool inGlobalNamespace)
     {
         var projectKey = new ProjectKey(Path.Combine(path, "obj"));
@@ -350,11 +352,14 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
                 return CreateDocumentSnapshot(
                     path, fileKind, codeDocument, projectEngine, imports, importDocuments, tagHelpers, inGlobalNamespace);
             });
+        snapshotMock
+            .Setup(d => d.GetCSharpSyntaxTreeAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(codeDocument.GetOrParseCSharpSyntaxTree(CancellationToken.None));
 
         return snapshotMock.Object;
     }
 
-    private static async Task<ImmutableArray<TagHelperDescriptor>> GetStandardTagHelpersAsync(CancellationToken cancellationToken)
+    private static async Task<TagHelperCollection> GetStandardTagHelpersAsync(CancellationToken cancellationToken)
     {
         var projectId = ProjectId.CreateNewId();
         var projectInfo = ProjectInfo
@@ -391,7 +396,7 @@ public abstract class FormattingTestBase : RazorToolingIntegrationTestBase
             fileSystem,
             configure: null);
 
-        var tagHelpers = await project.GetTagHelpersAsync(engine, NoOpTelemetryReporter.Instance, cancellationToken).ConfigureAwait(false);
+        var tagHelpers = await project.GetTagHelpersAsync(engine, cancellationToken).ConfigureAwait(false);
         Assert.NotEmpty(tagHelpers);
 
         return tagHelpers;

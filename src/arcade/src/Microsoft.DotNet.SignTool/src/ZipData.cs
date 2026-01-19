@@ -63,7 +63,10 @@ namespace Microsoft.DotNet.SignTool
                 return ReadTarGZipEntries(archivePath, tempDir, tarToolPath, ignoreContent);
 #else
                 return ReadTarGZipEntries(archivePath)
-                    .Select(entry => new ZipDataEntry(entry.Name, entry.DataStream, entry.Length));
+                    .Select(static entry => new ZipDataEntry(entry.Name, entry.DataStream, entry.Length)
+                    {
+                        UnixFileMode = (uint)entry.Mode,
+                    });
 #endif
             }
             else if (FileSignInfo.IsPkg(archivePath) || FileSignInfo.IsAppBundle(archivePath))
@@ -333,7 +336,10 @@ namespace Microsoft.DotNet.SignTool
                 {
                     var relativePath = path.Substring(extractDir.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
                     using var stream = ignoreContent ? null : (Stream)File.Open(path, FileMode.Open);
-                    yield return new ZipDataEntry(relativePath, stream);
+                    yield return new ZipDataEntry(relativePath, stream)
+                    {
+                        UnixFileMode = GetUnixFileMode(path),
+                    };
                 }
             }
             finally
@@ -347,6 +353,15 @@ namespace Microsoft.DotNet.SignTool
 
         private void RepackPkgOrAppBundles(TaskLoggingHelper log, string tempDir, string pkgToolPath)
         {
+#if NET472
+            throw new NotImplementedException("PKG manipulation is not supported on .NET Framework");
+#else
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                log.LogError("Pkg/AppBundle repackaging is not supported on Windows.");
+                return;
+            }
+
             string extractDir = Path.Combine(tempDir, Guid.NewGuid().ToString());
             try
             {
@@ -366,8 +381,12 @@ namespace Microsoft.DotNet.SignTool
                         continue;
                     }
 
-                    log.LogMessage(MessageImportance.Low, $"Copying signed stream from {signedPart.Value.FileSignInfo.FullPath} to {FileSignInfo.FullPath} -> {relativePath}.");
+                    // Preserve the original file mode from the PKG/App. The sign cache might bring if from an entry in an archive with different perms.
+                    UnixFileMode extractedFileMode = File.GetUnixFileMode(path);
+
+                    log.LogMessage(MessageImportance.Low, $"Copying signed stream from {signedPart.Value.FileSignInfo.FullPath} to {FileSignInfo.FullPath} -> {relativePath} (perms: {Convert.ToString((uint)extractedFileMode, 8)}).");
                     File.Copy(signedPart.Value.FileSignInfo.FullPath, path, overwrite: true);
+                    File.SetUnixFileMode(path, extractedFileMode);
                 }
 
                 if (!RunPkgProcess(srcPath: extractDir, dstPath: FileSignInfo.FullPath, "pack", pkgToolPath))
@@ -382,6 +401,7 @@ namespace Microsoft.DotNet.SignTool
                     Directory.Delete(extractDir, recursive: true);
                 }
             }
+#endif
         }
 
 #if NETFRAMEWORK
@@ -413,7 +433,7 @@ namespace Microsoft.DotNet.SignTool
                 foreach (var path in Directory.EnumerateFiles(extractDir, "*.*", SearchOption.AllDirectories))
                 {
                     var relativePath = path.Substring(extractDir.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
-                    using var stream = ignoreContent  ? null : (Stream)File.Open(path, FileMode.Open);
+                    using var stream = ignoreContent ? null : (Stream)File.Open(path, FileMode.Open);
                     yield return new ZipDataEntry(relativePath, stream);
                 }
             }
@@ -481,8 +501,7 @@ namespace Microsoft.DotNet.SignTool
                             entry.DataStream = signedStream;
                             entry.DataStream.Position = 0;
                             writer.WriteEntry(entry);
-
-                            log.LogMessage(MessageImportance.Low, $"Copying signed stream from {signedPart.Value.FileSignInfo.FullPath} to {FileSignInfo.FullPath} -> {relativeName}.");
+                            log.LogMessage(MessageImportance.Low, $"Copying signed stream from {signedPart.Value.FileSignInfo.FullPath} to {FileSignInfo.FullPath} -> {relativeName} (perms: {Convert.ToString((uint)entry.Mode, 8)}).");
                             continue;
                         }
 
@@ -523,7 +542,7 @@ namespace Microsoft.DotNet.SignTool
             string controlArchive;
             try
             {
-                controlArchive = GetUpdatedControlArchive(FileSignInfo.FullPath, dataArchive, tempDir);
+                controlArchive = GetUpdatedControlArchive(log, FileSignInfo.FullPath, dataArchive, tempDir);
             }
             catch(Exception e)
             {
@@ -553,7 +572,7 @@ namespace Microsoft.DotNet.SignTool
         /// <param name="tempDir"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private string GetUpdatedControlArchive(string debianPackage, string dataArchive, string tempDir)
+        private string GetUpdatedControlArchive(TaskLoggingHelper log, string debianPackage, string dataArchive, string tempDir)
         {
             var workingDirGuidSegment = Guid.NewGuid().ToString().Split('-')[0];
 
@@ -565,12 +584,12 @@ namespace Microsoft.DotNet.SignTool
             Directory.CreateDirectory(dataLayout);
 
             // Get the original control archive - to reuse package metadata and scripts
-            var entry = ReadDebContainerEntries(debianPackage, "control.tar").Single();
-            string controlArchive = Path.Combine(workingDir, entry.RelativePath);
-            entry.WriteToFile(controlArchive);
+            var controlEntry = ReadDebContainerEntries(debianPackage, "control.tar").Single();
+            string controlArchive = Path.Combine(workingDir, controlEntry.RelativePath);
+            controlEntry.WriteToFile(controlArchive);
 
-            ExtractTarballContents(dataArchive, dataLayout);
-            ExtractTarballContents(controlArchive, controlLayout);
+            ExtractTarballContents(log, dataArchive, dataLayout);
+            ExtractTarballContents(log, controlArchive, controlLayout);
 
             string sumsFile = Path.Combine(workingDir, "md5sums");
             CreateMD5SumsFile createMD5SumsFileTask = new()
@@ -600,17 +619,39 @@ namespace Microsoft.DotNet.SignTool
                 File.WriteAllText(controlFile, fileContents);
             }
 
-            // Repack the control tarball
-            using (var dstStream = File.Open(controlArchive, FileMode.Create))
+            // Update the control tarball contents. We update the contents of the control entry streams
+            // rather than recreating from the unpacked directory layout to ensure that
+            // the original entry field metadata and tar format is preserved.
+            using MemoryStream streamToCompress = new();
+            using (TarWriter writer = new(streamToCompress, leaveOpen: true))
             {
-                using var gzip = new GZipStream(dstStream, CompressionMode.Compress);
-                TarFile.CreateFromDirectory(controlLayout, gzip, includeBaseDirectory: false);
+                foreach (TarEntry entry in ReadTarGZipEntries(controlArchive))
+                {
+                    string relativeName = entry.Name;
+                    if (relativeName is "./control" or "./md5sums")
+                    {
+                        using FileStream fileStream = File.OpenRead(Path.Combine(controlLayout, relativeName));
+                        entry.DataStream = fileStream;
+                        entry.DataStream.Position = 0;
+                        writer.WriteEntry(entry);
+                        continue;
+                    }
+
+                    writer.WriteEntry(entry);
+                }
+            }
+
+            streamToCompress.Position = 0;
+            using (FileStream outputStream = File.Open(controlArchive, FileMode.Create))
+            {
+                using GZipStream compressor = new(outputStream, CompressionMode.Compress);
+                streamToCompress.CopyTo(compressor);
             }
 
             return controlArchive;
         }
 
-        internal static void ExtractTarballContents(string file, string destination, bool skipSymlinks = true)
+        internal static void ExtractTarballContents(TaskLoggingHelper log, string file, string destination, bool skipSymlinks = true)
         {
             foreach (TarEntry tar in ReadTarGZipEntries(file))
             {
@@ -623,8 +664,11 @@ namespace Microsoft.DotNet.SignTool
                 string outputPath = Path.Join(destination, tar.Name);
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
-                using FileStream outputFileStream = File.Create(outputPath);
-                tar.DataStream?.CopyTo(outputFileStream);
+                using (FileStream outputFileStream = File.Create(outputPath))
+                {
+                    tar.DataStream?.CopyTo(outputFileStream);
+                }
+                SetUnixFileMode(log, (uint)tar.Mode, outputPath);
             }
         }
 
@@ -636,7 +680,7 @@ namespace Microsoft.DotNet.SignTool
             {
                 string relativePath = entry.Name; // lgtm [cs/zipslip] Archive from trusted source
 
-                // The relative path ocassionally ends with a '/', which is not a valid path given that the path is a file.
+                // The relative path occasionally ends with a '/', which is not a valid path given that the path is a file.
                 // Remove the following workaround once https://github.com/dotnet/arcade/issues/15384 is resolved.
                 if (relativePath.EndsWith("/"))
                 {
@@ -645,7 +689,10 @@ namespace Microsoft.DotNet.SignTool
 
                 if (match == null || relativePath.StartsWith(match))
                 {
-                    yield return new ZipDataEntry(relativePath, entry.DataStream);
+                    yield return new ZipDataEntry(relativePath, entry.DataStream)
+                    {
+                        UnixFileMode = entry.Mode & ArEntry.FilePermissionMask,
+                    };
                 }
             }
         }
@@ -658,7 +705,10 @@ namespace Microsoft.DotNet.SignTool
 
             while (archive.GetNextEntry() is CpioEntry entry)
             {
-                yield return new ZipDataEntry(entry.Name, entry.DataStream);
+                yield return new ZipDataEntry(entry.Name, entry.DataStream)
+                {
+                    UnixFileMode = entry.Mode & CpioEntry.FilePermissionMask,
+                };
             }
         }
 
@@ -669,7 +719,7 @@ namespace Microsoft.DotNet.SignTool
             Directory.CreateDirectory(workingDir);
             string layout = Path.Combine(workingDir, "layout");
             Directory.CreateDirectory(layout);
-            ExtractRpmPayloadContents(FileSignInfo.FullPath, layout);
+            ExtractRpmPayloadContents(log, FileSignInfo.FullPath, layout);
 
             // Update signed files in layout
             foreach (var signedPart in NestedParts.Values)
@@ -680,10 +730,10 @@ namespace Microsoft.DotNet.SignTool
             // Create payload.cpio
             string payload = Path.Combine(workingDir, "payload.cpio");
 
-            RunExternalProcess("bash", $"-c \"find . -depth ! -wholename '.' -print  | cpio -H newc -o --quiet > '{payload}'\"", out string _, layout);
+            RunExternalProcess(log, "bash", $"-c \"find . -depth ! -wholename '.' -print  | cpio -H newc -o --quiet > '{payload}'\"", out string _, layout);
 
             // Collect file types for all files in layout
-            RunExternalProcess("bash", $"-c \"find . -depth ! -wholename '.'  -exec file {{}} \\;\"", out string output, layout);
+            RunExternalProcess(log, "bash", $"-c \"find . -depth ! -wholename '.'  -exec file {{}} \\;\"", out string output, layout);
             ITaskItem[] rawPayloadFileKinds =
                 output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
                       .Select(t => new TaskItem(t))
@@ -744,7 +794,7 @@ namespace Microsoft.DotNet.SignTool
             return RpmPackage.Read(stream).Header.Entries;
         }
 
-        internal static void ExtractRpmPayloadContents(string rpmPackage, string layout)
+        internal static void ExtractRpmPayloadContents(TaskLoggingHelper log, string rpmPackage, string layout)
         {
             foreach (var entry in ReadRpmContainerEntries(rpmPackage))
             {
@@ -754,18 +804,21 @@ namespace Microsoft.DotNet.SignTool
                 if (entry != null)
                 {
                     entry.WriteToFile(outputPath);
+                    SetUnixFileMode(log, entry.UnixFileMode, outputPath);
                 }
             }
         }
 
-        private static bool RunExternalProcess(string cmd, string args, out string output, string workingDir = null)
+        private static bool RunExternalProcess(TaskLoggingHelper log, string cmd, string args, out string output, string workingDir = null)
         {
+            log.LogMessage(MessageImportance.Low, $"Running command: '{cmd}' {args}");
+
             ProcessStartInfo psi = new()
             {
                 FileName = cmd,
                 Arguments = args,
                 RedirectStandardOutput = true,
-                RedirectStandardError = false,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WorkingDirectory = workingDir
@@ -775,8 +828,40 @@ namespace Microsoft.DotNet.SignTool
             output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
+            string stderr = process.StandardError.ReadToEnd();
+            if (!string.IsNullOrWhiteSpace(stderr))
+            {
+                log.LogMessage(MessageImportance.Low, $"  Stderr: {stderr}");
+            }
+
+            if (process.ExitCode != 0)
+            {
+                log.LogMessage(MessageImportance.Low, $"  Exit code: {process.ExitCode}");
+            }
+
             return process.ExitCode == 0;
         }
 #endif
+
+        internal static void SetUnixFileMode(TaskLoggingHelper log, uint? unixFileMode, string outputPath)
+        {
+#if NET
+            // Set file mode if not the default.
+            if (!OperatingSystem.IsWindows() && unixFileMode is { } mode and not /* 0644 */ 420)
+            {
+                log.LogMessage(MessageImportance.Low, $"Setting file mode {Convert.ToString(mode, 8)} on: {outputPath}");
+                File.SetUnixFileMode(outputPath, (UnixFileMode)mode);
+            }
+#endif
+        }
+
+        private static uint? GetUnixFileMode(string filePath)
+        {
+#if NET
+            return OperatingSystem.IsWindows() ? null : (uint)File.GetUnixFileMode(filePath);
+#else
+            return null;
+#endif
+        }
     }
 }

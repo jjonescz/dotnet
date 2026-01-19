@@ -1,5 +1,4 @@
 
-//  Microsoft (R) .NET IL Disassembler.  Version 5.0.0
 
 
 // ----- DOS Header:
@@ -2869,9 +2868,9 @@
 .assembly /*20000001*/ noplatform netstandard
 {
   .custom instance void System.Reflection.AssemblyMetadataAttribute::.ctor(string,
-                                                                                        string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
-                                                                                                    2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
-                                                                                                    2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
+                                                                           string) = ( 01 00 06 73 6F 75 72 63 65 1F 73 6F 75 72 63 65   // ...source.source
+                                                                                       2D 62 75 69 6C 64 2D 72 65 66 65 72 65 6E 63 65   // -build-reference
+                                                                                       2D 70 61 63 6B 61 67 65 73 00 00 )                // -packages..
   .custom /*0C000002:06002D14*/ instance void System.Runtime.CompilerServices.ExtensionAttribute/*020004A8*/::.ctor() /* 06002D14 */ = ( 01 00 00 00 ) 
   .custom /*0C000003:06002CE6*/ instance void System.Runtime.CompilerServices.CompilationRelaxationsAttribute/*02000492*/::.ctor(int32) /* 06002CE6 */ = ( 01 00 08 00 00 00 00 00 ) 
   .custom /*0C000004:06002D5E*/ instance void System.Runtime.CompilerServices.RuntimeCompatibilityAttribute/*020004CE*/::.ctor() /* 06002D5E */ = ( 01 00 01 00 54 02 16 57 72 61 70 4E 6F 6E 45 78   // ....T..WrapNonEx
@@ -2925,7 +2924,6 @@
 .stackreserve 0x00100000
 .subsystem 0x0003       // WINDOWS_CUI
 .corflags 0x00000009    //  ILONLY
-// Image base: 0x00007FA3CFF04000
 
 
 // =============== CLASS MEMBERS DECLARATION ===================
@@ -98025,7 +98023,7 @@
   .method /*06001B90*/ public hidebysig newslot abstract virtual 
           instance void  Abort(native int reason,
                                int32 retaining,
-                               int32 async) cil managed
+                               int32 'async') cil managed
   // SIG: 20 03 01 18 08 08
   {
     // Method begins at RVA 0x0
@@ -290762,7 +290760,7 @@
           Increment([opt] float64 increment) cil managed
   // SIG: 20 01 01 0D
   {
-    .param [1]/*0800644D*/  = float64(1)
+    .param [1]/*0800644D*/  = float64(1.0000000000000000)
     // Method begins at RVA 0x1273c
     // Code size       1 (0x1)
     .maxstack  8

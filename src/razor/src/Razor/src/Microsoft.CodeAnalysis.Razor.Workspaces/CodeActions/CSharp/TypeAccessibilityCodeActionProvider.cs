@@ -111,7 +111,7 @@ internal class TypeAccessibilityCodeActionProvider : ICSharpCodeActionProvider
                     continue;
                 }
 
-                var associatedValue = context.SourceText.GetSubTextString(diagnosticSpan);
+                var associatedValue = context.SourceText.ToString(diagnosticSpan);
 
                 var fqn = string.Empty;
 
@@ -251,7 +251,7 @@ internal class TypeAccessibilityCodeActionProvider : ICSharpCodeActionProvider
             // `@inject |SomeType SomeName` - true
             //
             return owner.AncestorsAndSelf().Any(
-                n => n is RazorDirectiveSyntax directive && directive.DirectiveDescriptor.Kind == DirectiveKind.SingleLine);
+                static n => n is RazorDirectiveSyntax directive && directive.IsDirectiveKind(DirectiveKind.SingleLine));
         }
     }
 
